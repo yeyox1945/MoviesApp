@@ -9,7 +9,7 @@ export const moviesApi = createApi({
         baseUrl: 'https://api.themoviedb.org/3',
         headers: {
             accept: 'application/json',
-            Authorization: 'Bearer '
+            Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_KEY}`
         }
     }),
 
