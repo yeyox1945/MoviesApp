@@ -9,13 +9,58 @@ export const moviesApi = createApi({
         baseUrl: 'https://api.themoviedb.org/3',
         headers: {
             accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZGExNzE5M2IyNGQ3OWFjMGJlMWI1YzdkNWY1YmM1YiIsInN1YiI6IjVkNWQ1ZGM1YzQ5MDQ4MDAxNTdkYWY3MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.aiPOJT-n7e46hbjNa1cnhiBtK0hcCMZ-Ixh152NObfI'
+            Authorization: 'Bearer '
         }
     }),
 
     endpoints: (builder) => ({
         getNowPlaying: builder.query<MoviesResponse, number>({
             query: (page) => `/movie/now_playing?page=${page}`,
+            // Only have one cache entry because the arg always maps to one string
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName;
+            },
+            // Merge incoming data to the cache entry
+            merge: (currentCache, newItems) => {
+                currentCache.results.push(...newItems.results);
+            },
+            // Refetch when the page arg changes
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg
+            },
+        }),
+        getPopular: builder.query<MoviesResponse, number>({
+            query: (page) => `/movie/popular?page=${page}`,
+            // Only have one cache entry because the arg always maps to one string
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName;
+            },
+            // Merge incoming data to the cache entry
+            merge: (currentCache, newItems) => {
+                currentCache.results.push(...newItems.results);
+            },
+            // Refetch when the page arg changes
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg
+            },
+        }),
+        getTopRated: builder.query<MoviesResponse, number>({
+            query: (page) => `/movie/top_rated?page=${page}`,
+            // Only have one cache entry because the arg always maps to one string
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName;
+            },
+            // Merge incoming data to the cache entry
+            merge: (currentCache, newItems) => {
+                currentCache.results.push(...newItems.results);
+            },
+            // Refetch when the page arg changes
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg
+            },
+        }),
+        getUpcoming: builder.query<MoviesResponse, number>({
+            query: (page) => `/movie/upcoming?page=${page}`,
             // Only have one cache entry because the arg always maps to one string
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
