@@ -1,5 +1,6 @@
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { Movie } from "../models/moviesResponse";
+import { router } from "expo-router";
 
 interface Props {
   movie: Movie;
@@ -10,19 +11,29 @@ interface Props {
 const MovieCard = ({ movie, height = 150, width = 100 }: Props) => {
   const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
+  const navigateToDetail = () =>
+    router.push({
+      pathname: "movies/[id]",
+      params: {
+        id: movie.id,
+      },
+    });
+
   return (
-    <View style={{ height, width}}>
-      <Image
-        source={{
-          uri,
-        }}
-        style={{
-          flex: 1,
-          objectFit: "cover",
-          borderRadius: 20,
-        }}
-      />
-    </View>
+    <TouchableOpacity activeOpacity={0.6} onPress={navigateToDetail}>
+      <View style={{ height, width }}>
+        <Image
+          source={{
+            uri,
+          }}
+          style={{
+            flex: 1,
+            objectFit: "cover",
+            borderRadius: 20,
+          }}
+        />
+      </View>
+    </TouchableOpacity>
   );
 };
 

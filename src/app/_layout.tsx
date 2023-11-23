@@ -1,70 +1,34 @@
-import { Tabs } from "expo-router/tabs";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
+import { Stack } from "expo-router";
+import { Platform, SafeAreaView } from "react-native";
 
-export default function AppLayout() {
+export default function StackLayout() {
+  const marginTop = Platform.OS === "ios" ? -60 : 0;
+
   return (
     <Provider store={store}>
-      <Tabs
-        screenOptions={{
-          headerShown: false,
-          headerTitle: "Cinemapedia",
-          tabBarStyle: {
-            paddingBottom: 8,
-            height: 60,
-          },
-          tabBarActiveTintColor: "indigo",
-          tabBarLabelStyle: {
-            fontSize: 13,
-            fontWeight: "500",
-          },
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            headerShown: true,
-            title: "Home",
-            href: "/",
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name={focused ? "albums" : "albums-outline"}
-                size={20}
-                color={focused ? "indigo" : "gray"}
-              />
-            ),
+      <SafeAreaView style={{ flex: 1, marginTop }}>
+        <Stack
+          screenOptions={{
+            headerTitleAlign: "left",
           }}
-        />
-        <Tabs.Screen
-          name="categories"
-          options={{
-            title: "Categories",
-            href: "/categories",
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name={focused ? "grid" : "grid-outline"}
-                size={20}
-                color={focused ? "indigo" : "gray"}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="favorites"
-          options={{
-            title: "Favorites",
-            href: "/favorites",
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name={focused ? "heart" : "heart-outline"}
-                size={20}
-                color={focused ? "indigo" : "gray"}
-              />
-            ),
-          }}
-        />
-      </Tabs>
+        >
+          <Stack.Screen
+            name="(home)"
+            options={{
+              headerShown: false,
+              title: "home",
+            }}
+          />
+          <Stack.Screen
+            name="movies/[id]"
+            options={{
+              title: "Movie detail",
+            }}
+          />
+        </Stack>
+      </SafeAreaView>
     </Provider>
   );
 }

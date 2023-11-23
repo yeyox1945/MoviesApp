@@ -1,13 +1,12 @@
 import { ScrollView } from "react-native";
-import MovieHorizontalView from "../components/MovieHorizontalView";
+import MovieHorizontalView from "../../components/MovieHorizontalView";
 import {
   useGetNowPlayingQuery,
   useGetPopularQuery,
   useGetTopRatedQuery,
   useGetUpcomingQuery,
-} from "../redux/apis/moviesApi";
-import { router } from "expo-router";
-import { useMoviePagination } from "../hooks/useMoviePagination";
+} from "../../redux/apis/moviesApi";
+import { useMoviePagination } from "../../hooks/useMoviePagination";
 
 export default function App() {
   // hooks
