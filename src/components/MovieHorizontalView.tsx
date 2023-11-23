@@ -1,23 +1,20 @@
-import { View, Text, Image, ScrollView, NativeScrollEvent } from "react-native";
-import { useMoviePagination } from "../hooks/useMoviePagination";
-import { useGetNowPlayingQuery } from "../redux/apis/moviesApi";
+import {
+  View,
+  Text,
+  NativeScrollEvent,
+  FlatList,
+  ScrollView,
+} from "react-native";
+import MovieCard from "./MovieCard";
+import { Movie } from "../models/moviesResponse";
 
 interface Props {
-  title: string;
-  // movies: Movie[];
-  // endReached?: () => void;
+  title?: string;
+  movies: Movie[];
+  onEndReached?: () => void;
 }
 
-const MovieHorizontalView = ({ title }: Props) => {
-  // hooks
-  const pagination = useMoviePagination();
-
-  const {
-    data: movies,
-    isLoading,
-    isFetching,
-  } = useGetNowPlayingQuery(pagination.page);
-
+const MovieHorizontalView = ({ title, movies, onEndReached }: Props) => {
   const handleScrollEnd = ({
     layoutMeasurement,
     contentOffset,
@@ -27,43 +24,34 @@ const MovieHorizontalView = ({ title }: Props) => {
 
     if (
       layoutMeasurement.width + contentOffset.x >=
-        contentSize.width - paddingToEnd &&
-      !isFetching &&
-      !isLoading &&
-      !pagination.lastPage
+      contentSize.width - paddingToEnd
     ) {
       console.log("Load next page...");
-      pagination.loadNextPage();
+      onEndReached!();
     }
   };
 
   return (
-    <View>
-      <Text style={{ fontSize: 20, fontWeight: "bold", paddingVertical: 5 }}>
-        {title}
-      </Text>
+    <View style={{ paddingBottom: 10 }}>
+      {title && (
+        <Text style={{ fontSize: 20, fontWeight: "bold", paddingVertical: 5 }}>
+          {title}
+        </Text>
+      )}
 
-      <ScrollView
+      <FlatList
         horizontal
-        onScroll={({ nativeEvent }) => handleScrollEnd(nativeEvent)}
-      >
-        {movies?.results.map((movie, index) => (
-          <Image
-            key={`${movie.id}-${index}`}
-            source={{
-              uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-            }}
-            style={{
-              flex: 1,
-              height: 150,
-              width: 100,
-              objectFit: "cover",
-              borderRadius: 20,
-              marginHorizontal: 5,
-            }}
-          />
-        ))}
-      </ScrollView>
+        data={movies}
+        renderItem={({ item }) => <MovieCard movie={item} />}
+        keyExtractor={(item, index) => `${title}-${item.id}-${index}`}
+        onScroll={
+          onEndReached
+            ? ({ nativeEvent }) => handleScrollEnd(nativeEvent)
+            : () => null
+        }
+        ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+        // showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };
