@@ -1,4 +1,5 @@
 import { Tabs } from "expo-router";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const TabLayout = () => {
@@ -6,6 +7,10 @@ const TabLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
+        headerLeft: () => <MaterialIcons name="movie" size={20} />,
+        headerLeftContainerStyle: {
+          marginStart: 20,
+        },
         headerTitle: "Cinemapedia",
         headerTitleAlign: "left",
         tabBarStyle: {

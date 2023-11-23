@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 import MovieHorizontalView from "../../components/MovieHorizontalView";
 import {
   useGetNowPlayingQuery,
@@ -7,8 +7,12 @@ import {
   useGetUpcomingQuery,
 } from "../../redux/apis/moviesApi";
 import { useMoviePagination } from "../../hooks/useMoviePagination";
+import MovieCard from "../../components/MovieCard";
+import Carousel from "react-native-snap-carousel";
 
-export default function App() {
+const { width: windowWidth } = Dimensions.get("window");
+
+export default function Home() {
   // hooks
   const nowPlayingPagination = useMoviePagination();
   const popularPagination = useMoviePagination();
@@ -38,14 +42,20 @@ export default function App() {
 
   return (
     <ScrollView>
-      <MovieHorizontalView
-        title="In theaters"
-        movies={nowPlaying?.results || []}
-        onEndReached={
-          !nowPlayingLoading && !nowPlayingFetching
-            ? nowPlayingPagination.loadNextPage
-            : undefined
-        }
+      <Carousel
+        data={nowPlaying?.results || []}
+        renderItem={({ item }) => (
+          <MovieCard
+            movie={item}
+            image={item.backdrop_path}
+            width={300}
+            height={200}
+          />
+        )}
+        itemWidth={300}
+        sliderWidth={windowWidth}
+        containerCustomStyle={{ marginVertical: 20 }}
+        loop
       />
       <MovieHorizontalView
         title="Popular"

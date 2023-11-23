@@ -18,7 +18,7 @@ export default function StackLayout() {
             name="(home)"
             options={{
               headerShown: false,
-              title: "home",
+              title: "Home",
             }}
           />
           <Stack.Screen

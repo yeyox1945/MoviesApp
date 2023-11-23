@@ -34,7 +34,14 @@ const MovieHorizontalView = ({ title, movies, onEndReached }: Props) => {
   return (
     <View style={{ paddingBottom: 10 }}>
       {title && (
-        <Text style={{ fontSize: 20, fontWeight: "bold", paddingVertical: 5 }}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            paddingVertical: 5,
+            paddingLeft: 20,
+          }}
+        >
           {title}
         </Text>
       )}
@@ -50,7 +57,8 @@ const MovieHorizontalView = ({ title, movies, onEndReached }: Props) => {
             : () => null
         }
         ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
-        // showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        style={{ paddingHorizontal: 20 }}
       />
     </View>
   );
