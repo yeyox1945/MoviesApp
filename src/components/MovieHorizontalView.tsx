@@ -3,10 +3,10 @@ import {
   Text,
   NativeScrollEvent,
   FlatList,
-  ScrollView,
 } from "react-native";
 import MovieCard from "./MovieCard";
 import { Movie } from "../models/moviesResponse";
+import { useState } from "react";
 
 interface Props {
   title?: string;
@@ -15,19 +15,24 @@ interface Props {
 }
 
 const MovieHorizontalView = ({ title, movies, onEndReached }: Props) => {
+  const [loading, setLoading] = useState(false);
+
   const handleScrollEnd = ({
     layoutMeasurement,
     contentOffset,
     contentSize,
   }: NativeScrollEvent) => {
-    const paddingToEnd = 200;
+    const paddingToEnd = 100;
 
     if (
       layoutMeasurement.width + contentOffset.x >=
-      contentSize.width - paddingToEnd
+        contentSize.width - paddingToEnd &&
+      !loading
     ) {
-      console.log("Load next page...");
+      setLoading(true);
       onEndReached!();
+      console.log("Load next page...");
+      setTimeout(() => setLoading(false), 500);
     }
   };
 

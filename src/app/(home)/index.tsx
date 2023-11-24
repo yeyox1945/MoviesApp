@@ -1,44 +1,31 @@
-import { Dimensions, ScrollView } from "react-native";
+import { ActivityIndicator, Dimensions, ScrollView, View } from "react-native";
 import MovieHorizontalView from "../../components/MovieHorizontalView";
-import {
-  useGetNowPlayingQuery,
-  useGetPopularQuery,
-  useGetTopRatedQuery,
-  useGetUpcomingQuery,
-} from "../../redux/apis/moviesApi";
-import { useMoviePagination } from "../../hooks/useMoviePagination";
 import MovieCard from "../../components/MovieCard";
 import Carousel from "react-native-snap-carousel";
+import { useHomePage } from "../../hooks/useHomePage";
 
 const { width: windowWidth } = Dimensions.get("window");
 
 export default function Home() {
-  // hooks
-  const nowPlayingPagination = useMoviePagination();
-  const popularPagination = useMoviePagination();
-  const topRatedPagination = useMoviePagination();
-  const upcomingPagination = useMoviePagination();
+  const {
+    nowPlaying,
+    popular,
+    topRated,
+    upcoming,
+    isLoading,
+    isFetching,
+    popularPagination,
+    topRatedPagination,
+    upcomingPagination,
+  } = useHomePage();
 
-  const {
-    data: nowPlaying,
-    isLoading: nowPlayingLoading,
-    isFetching: nowPlayingFetching,
-  } = useGetNowPlayingQuery(nowPlayingPagination.page);
-  const {
-    data: popular,
-    isLoading: popularLoading,
-    isFetching: popularFetching,
-  } = useGetPopularQuery(popularPagination.page);
-  const {
-    data: topRated,
-    isLoading: topRatedLoading,
-    isFetching: topRatedFetching,
-  } = useGetTopRatedQuery(topRatedPagination.page);
-  const {
-    data: upcoming,
-    isLoading: upcomingLoading,
-    isFetching: upcomingFetching,
-  } = useGetUpcomingQuery(upcomingPagination.page);
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <ScrollView>
@@ -61,7 +48,7 @@ export default function Home() {
         title="Popular"
         movies={popular?.results || []}
         onEndReached={
-          !popularLoading && !popularFetching
+          !isFetching && !popularPagination.lastPage
             ? popularPagination.loadNextPage
             : undefined
         }
@@ -70,7 +57,7 @@ export default function Home() {
         title="Top rated"
         movies={topRated?.results || []}
         onEndReached={
-          !topRatedLoading && !topRatedFetching
+          !isFetching && !topRatedPagination.lastPage
             ? topRatedPagination.loadNextPage
             : undefined
         }
@@ -79,7 +66,7 @@ export default function Home() {
         title="Upcoming"
         movies={upcoming?.results || []}
         onEndReached={
-          !upcomingLoading && !upcomingFetching
+          !isFetching && !upcomingPagination.lastPage
             ? upcomingPagination.loadNextPage
             : undefined
         }
