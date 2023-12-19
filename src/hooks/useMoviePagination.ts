@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useMoviePagination = () => {
+  const [page, setPage] = useState(1);
+  const lastPage: boolean = page >= 5;
 
-    const [page, setPage] = useState(1);
-    const [lastPage, setLastPage] = useState(false);
+  const loadNextPage = () => (!lastPage ? setPage((prev) => prev + 1) : null);
 
-    useEffect(() => {
-        if (page === 5) {
-            setLastPage(true);
-        }
-    }, [page]);
-
-    const loadNextPage = () => !lastPage ? setPage(page + 1) : null;
-
-    return {
-        page,
-        lastPage,
-        loadNextPage,
-    }
-}
+  return {
+    page,
+    lastPage,
+    loadNextPage,
+  };
+};

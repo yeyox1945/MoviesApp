@@ -1,4 +1,10 @@
-import { ActivityIndicator, Dimensions, ScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MovieHorizontalView from "../../components/MovieHorizontalView";
 import MovieCard from "../../components/MovieCard";
 import Carousel from "react-native-snap-carousel";
@@ -19,7 +25,7 @@ export default function Home() {
     upcomingPagination,
   } = useHomePage();
 
-  if (isLoading) {
+  if (isLoading || !popular || !nowPlaying || !topRated || !upcoming) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator />
@@ -30,7 +36,7 @@ export default function Home() {
   return (
     <ScrollView>
       <Carousel
-        data={nowPlaying?.results || []}
+        data={nowPlaying.results}
         renderItem={({ item }) => (
           <MovieCard
             movie={item}
@@ -46,7 +52,7 @@ export default function Home() {
       />
       <MovieHorizontalView
         title="Popular"
-        movies={popular?.results || []}
+        movies={popular.results}
         onEndReached={
           !isFetching && !popularPagination.lastPage
             ? popularPagination.loadNextPage
@@ -55,7 +61,7 @@ export default function Home() {
       />
       <MovieHorizontalView
         title="Top rated"
-        movies={topRated?.results || []}
+        movies={topRated.results}
         onEndReached={
           !isFetching && !topRatedPagination.lastPage
             ? topRatedPagination.loadNextPage
@@ -64,7 +70,7 @@ export default function Home() {
       />
       <MovieHorizontalView
         title="Upcoming"
-        movies={upcoming?.results || []}
+        movies={upcoming.results}
         onEndReached={
           !isFetching && !upcomingPagination.lastPage
             ? upcomingPagination.loadNextPage

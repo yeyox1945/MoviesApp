@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { Movie } from "../models/moviesResponse";
 import { router } from "expo-router";
 

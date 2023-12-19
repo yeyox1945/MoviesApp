@@ -45,13 +45,13 @@ export const useHomePage = () => {
       popularFetching ||
       topRatedFetching ||
       upcomingFetching,
-      nowPlaying,
-      popular,
-      topRated,
-      upcoming,
-      nowPlayingPagination,
-      popularPagination,
-      topRatedPagination,
-      upcomingPagination,
+    nowPlaying,
+    popular,
+    topRated,
+    upcoming,
+    nowPlayingPagination,
+    popularPagination,
+    topRatedPagination,
+    upcomingPagination,
   };
 };
