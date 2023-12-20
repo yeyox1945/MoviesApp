@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { MoviesResponse } from "../../models/moviesResponse";
+import { MovieFull } from "../../models/movieDetailResponse";
+import { MovieCredits } from "../../models/movieCreditsResponse";
 
 export const moviesApi = createApi({
   reducerPath: "movies",
@@ -60,6 +62,12 @@ export const moviesApi = createApi({
         return currentArg !== previousArg;
       },
     }),
+    getMovieById: builder.query<MovieFull, string>({
+      query: (id) => `/movie/${id}`,
+    }),
+    getCreditsById: builder.query<MovieCredits, string>({
+      query: (id) => `/movie/${id}/credits`,
+    }),
   }),
 });
 
@@ -68,4 +76,6 @@ export const {
   useGetPopularQuery,
   useGetTopRatedQuery,
   useGetUpcomingQuery,
+  useGetMovieByIdQuery,
+  useGetCreditsByIdQuery,
 } = moviesApi;

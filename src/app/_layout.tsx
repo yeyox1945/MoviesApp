@@ -25,6 +25,7 @@ export default function StackLayout() {
             name="movies/[id]"
             options={{
               title: "Movie detail",
+              headerShown: false,
             }}
           />
         </Stack>

@@ -5,10 +5,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import MovieHorizontalView from "../../components/MovieHorizontalView";
-import MovieCard from "../../components/MovieCard";
+import MovieHorizontalView from "../../components/movies/MovieHorizontalView";
+import MovieCard from "../../components/movies/MovieCard";
 import Carousel from "react-native-snap-carousel";
 import { useHomePage } from "../../hooks/useHomePage";
+import LoadingPage from "../../components/LoadingPage";
 
 const { width: windowWidth } = Dimensions.get("window");
 
@@ -25,13 +26,8 @@ export default function Home() {
     upcomingPagination,
   } = useHomePage();
 
-  if (isLoading || !popular || !nowPlaying || !topRated || !upcoming) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+  if (isLoading || !popular || !nowPlaying || !topRated || !upcoming)
+    return <LoadingPage />;
 
   return (
     <ScrollView>

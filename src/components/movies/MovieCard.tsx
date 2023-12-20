@@ -1,5 +1,5 @@
 import { Image, TouchableOpacity } from "react-native";
-import { Movie } from "../models/moviesResponse";
+import { Movie } from "../../models/moviesResponse";
 import { router } from "expo-router";
 
 interface Props {
@@ -23,7 +23,6 @@ const MovieCard = ({
       pathname: "movies/[id]",
       params: {
         id: movie.id,
-        movie: movie,
       },
     });
 

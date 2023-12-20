@@ -1,6 +1,6 @@
 import { View, Text, NativeScrollEvent, FlatList } from "react-native";
 import MovieCard from "./MovieCard";
-import { Movie } from "../models/moviesResponse";
+import { Movie } from "../../models/moviesResponse";
 import { useMemo, useState } from "react";
 
 interface Props {
@@ -15,7 +15,7 @@ const MovieHorizontalView = ({ title, movies, onEndReached }: Props) => {
     contentOffset,
     contentSize,
   }: NativeScrollEvent) => {
-    const paddingToEnd = 100;
+    const paddingToEnd = 150;
 
     if (
       layoutMeasurement.width + contentOffset.x >=
